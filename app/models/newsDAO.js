@@ -13,7 +13,7 @@ NewsDAO.prototype.getSingle = function(callback){
 };
 
 NewsDAO.prototype.save = function(news_body, callback){
-    console.log(news_body);
+    //console.log(news_body);
     this._conn.query('insert into news set ?', news_body, callback);
 };
 
