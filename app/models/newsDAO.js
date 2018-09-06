@@ -7,6 +7,11 @@ NewsDAO.prototype.getAll = function( callback){
     this._conn.query(sqlQry, callback);
 };
 
+NewsDAO.prototype.getLastNews = function( callback){
+    sqlQry = 'select * from news ORDER BY published_at DESC LIMIT 5';
+    this._conn.query(sqlQry, callback);
+};
+
 NewsDAO.prototype.getSingle = function(callback){
     sqlQry = 'select * from news where id = 1';
     this._conn.query(sqlQry, callback);

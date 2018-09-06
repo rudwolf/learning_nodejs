@@ -1,52 +1,102 @@
-<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<meta charset="UTF-8">
-			<title>Formulário de cadastro de Notícia</title>
-		</head>
-	<body>
+<!DOCTYPE HTML>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
 
-		<h1>Adicionar notícia</h1>
+        <title>Portal de notícias</title>
+        
+        <!-- JQuery -->
+        <script src="/js/jquery-2.2.1.js"></script>
 
-        <div class="errors">
+        <!-- bootstrap - link cdn -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    
+        <!-- incluindo css -->
+        <link href="/css/style.css" rel="stylesheet">
+
+        <!-- favicon -->
+        <link rel="shortcut icon" href="/images/favicon.ico" />
+    </head>
+
+    <body>
+
+        <nav class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    
+                    <img src="/images/logo.png" />
+                </div>
+
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="index.html">HOME</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+        <div class="container">
+        
             <%
-            if(validation) { %>
-            <ul>
-                <% for(var i = 0; i < validation.length; i++) { %>
-                <li>
-                    <%= validation[i].msg %>
-                </li>
-                <% } %>
-            </ul>                
+            if(validation.length > 0) { %>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-danger">
+                        <strong>Atenção!</strong>
+                        <ul>
+                            <% for(var i = 0; i < validation.length; i++) { %>
+                            <li>
+                                <%= validation[i].msg %>
+                            </li>
+                            <% } %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <%
             } %>
-        </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <form action="/news/save" method="post">
+                        <div class="form-group">
+                            <label for="titulo">Título:</label>
+                            <input type="text" class="form-control" id="title" name="title" value="<%=news_body.title%>">
+                        </div>
 
-        <div>
-            <form action="/news/save" method="post">
-                <div>
-                    <label for="title">Title</label>
-                    <input type="text" name="title" value="<%=news_body.title%>" id="title">
-                </div>
-                <div>
-                    <label for="title">Resumo</label>
-                    <input type="text" name="excerpt" value="<%=news_body.excerpt%>" id="excerpt">
-                </div>
-                <div>
-                    <label for="title">Autor</label>
-                    <input type="text" name="author" value="<%=news_body.author%>" id="excerpt">
-                </div>
-                <div>
-                    <label for="title">Publicado em</label>
-                    <input type="date" name="published_at" id="published_at" value="<%=news_body.published_at%>">
-                </div>
-                <div>
-                    <label for="text">Notícia</label>
-                    <textarea name="text" id="text" cols="30" rows="10"><%=news_body.text%></textarea>
-                </div>
-                <div><input type="submit" value="Enviar"></div>
-            </form>
-        </div>
+                        <div class="form-group">
+                            <label for="pwd">Resumo:</label>
+                            <input type="text" class="form-control" id="excerpt" name="excerpt" value="<%=news_body.excerpt%>">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pwd">Autor:</label>
+                            <input type="text" class="form-control" id="author" name="author" value="<%=news_body.author%>">
+                        </div>
 
-	</body>
+                        <div class="form-group">
+                            <label for="pwd">Data:</label>
+                            <input type="date" class="form-control" id="published_at" name="published_at" value="<%=news_body.published_at%>">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pwd">Notícia:</label>
+                            <textarea class="form-control" id="text" name="text"><%=news_body.text%></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-default">Cadastrar</button>
+                        </form>
+                </div>
+            </div>
+        </div>
+    
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    
+    </body>
 </html>
