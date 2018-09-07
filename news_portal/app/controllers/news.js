@@ -10,8 +10,10 @@ module.exports.news_list = function(app, req, res) {
 module.exports.news_single = function(app, req, res) {
     var conn = app.config.db_conn();
     var newsDAO = new app.app.models.newsDAO(conn);
+    
+    news_id = req.params.id;
 
-    newsDAO.getSingle(function(error, result) {
+    newsDAO.getSingle(news_id, function(error, result) {
         //res.send(result);
         res.render('noticias/noticia', {news: result});
     });
