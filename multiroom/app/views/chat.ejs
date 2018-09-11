@@ -6,7 +6,7 @@
         <title>Multiroom Chat</title>
         
         <!-- JQUERY -->
-        <script src="js/jquery-2.2.1.js"></script>
+        <script src="/js/jquery-2.2.1.js"></script>
         
         <!-- bootstrap - link cdn -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -71,31 +71,11 @@
         <div class="container">
             <div class="row conversa" id="conversa">
                 <div class="col-md-1"></div>
-                <div class="col-md-10">
-                    <div class="dialogo">
+                <div class="col-md-10" id="chat-messages">
+                    <!-- <div class="dialogo">
                         <h4>Jorge</h4>
                         <p>Fala José, blz cara?</p>
-                    </div>
-                    
-                    <div class="dialogo">
-                        <h4>José</h4>
-                        <p>Opa, tudo certo!</p>
-                    </div>
-                    
-                    <div class="dialogo">
-                        <h4>Jorge</h4>
-                        <p>Vai estudar mais sobre NodeJS hoje?</p>
-                    </div>
-                    
-                    <div class="dialogo">
-                        <h4>José</h4>
-                        <p>Sim, com certeza. Vamos trabalhar com Websockets hoje, o assunto é bem interessante</p>
-                    </div>
-                    
-                    <div class="dialogo">
-                        <h4>Jorge</h4>
-                        <p>Show de bola, comunicação bi-direcional em páginas ou sistemas web é muito bacana mesmo</p>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="col-md-1"></div>
                 
@@ -142,6 +122,21 @@
         </nav>      
         
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io('http://scotchbox.local');
+
+            socket.on('clientMsg', function(data) {
+                var html = '';
+
+                html += '<div class="dialogo">';
+                html += '<h4>'+data.nickname+'</h4>';
+                html += '<p>'+data.nickname+' '+data.msg+'</p>';
+                html += '</div>';
+                $('#chat-messages').append(html);
+            });
+        </script>
         
     </body>
 </html>
