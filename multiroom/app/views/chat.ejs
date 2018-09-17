@@ -61,7 +61,7 @@
                             <a href="#" id="exibe_chat">Chat</a>
                         </li>
                         <li>
-                            <a href="#" id="exibe_participantes">Participantes</a>
+                            <a href="#" id="exibe_participantes">Members</a>
                         </li>
                     </ul>
                 </div>
@@ -83,10 +83,11 @@
             
             <div class="row participantes" id="participantes" style="display:none">
                 <div class="col-md-1"></div>
-                <div class="col-md-10">
-                    <span class="participante">
+                <div class="col-md-10" id="room-user-list">
+
+                    <!-- <span class="participante">
                         <img src="img/ico_usuario.png" />
-                        Jorge
+                        Jorgek
                     </span>
                     
                     <span class="participante">
@@ -97,26 +98,27 @@
                     <span class="participante">
                         <img src="img/ico_usuario.png" />
                         Fernando
-                    </span>
+                    </span> -->
                 </div>
                 <div class="col-md-1"></div>
-                
             </div>
         </div>
         
         <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
             <div class="container">
                 <div class="panel-body campo-mensagem">
-                    <form>
+                    
                         <div class="col-md-12">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Mensagem">
+                                <input type="text" class="form-control" placeholder="Mensagem" id="message_text">
+                                <input type="hidden" id="nickname" value="<%=formData.login%>" >
+                                <input type="hidden" id="login_sent" value="0" >
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">></button>
+                                    <button class="btn btn-default" type="button" id="send_message">></button>
                                 </span>
                             </div>
                         </div>
-                    </form>
+                    
                 </div>
             </div>
         </nav>      
@@ -126,6 +128,29 @@
         <script src="/socket.io/socket.io.js"></script>
         <script>
             var socket = io('http://scotchbox.local');
+            
+            $('#message_text').on('keyup', function(e) {
+                if(e.which == 13) {
+                    sendMsgToServer();
+                }
+            });
+
+            $('#send_message').on('click', function () {
+                sendMsgToServer();
+            });
+
+            function sendMsgToServer() {
+                socket.emit(
+                    'msgToServer',
+                    {
+                        nickname: $('#nickname').val(),
+                        msg: $('#message_text').val(),
+                        login_sent: $('#login_sent').val()
+                    }
+                );
+                $('#message_text').val('');
+                $('#login_sent').val(1);
+            }
 
             socket.on('clientMsg', function(data) {
                 var html = '';
@@ -135,7 +160,18 @@
                 html += '<p>'+data.nickname+' '+data.msg+'</p>';
                 html += '</div>';
                 $('#chat-messages').append(html);
+                window.scrollTo(0, document.body.scrollHeight);
             });
+
+            socket.on('userListControl', function(data) {
+                var html = '';
+
+                html += '<span class="participante">';
+                html += '<img src="img/ico_usuario.png" /> '+data.nickname;
+                html += '</span>';
+                $('#room-user-list').append(html);
+            });
+
         </script>
         
     </body>
