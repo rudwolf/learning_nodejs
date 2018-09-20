@@ -21,7 +21,7 @@
 		<nav class="navbar navbar-default navbar-static-top">
 			<div class="container">
 				<div class="form-group sair">
-					<button type="button" class="btn btn-info pull-right">Exit</button>
+					<button type="button" class="btn btn-info pull-right" id="btn_exit">Exit</button>
 				</div>
 			</div>
 		</nav>
@@ -89,5 +89,12 @@
 				</div>
 			</div>
 		</div>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#btn_exit').on('click', function() {
+					window.location.href = '/logout';
+				})
+			});
+		</script>
 	</body>
 </html>

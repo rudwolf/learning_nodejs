@@ -20,11 +20,22 @@
 
 		<nav class="navbar navbar-default navbar-static-top">
 			<div class="container">
-				<form class="form-inline form-entrar">
+				<% if(validation.length) { %>
+				<div class="alert alert-danger">
+					<strong>Please fix the errors below</strong>
+					<ul>
+						<% for(var i = 0;i < validation.length; i++) { %>
+						<li><%=validation[i].msg%></li>
+						<% } %>
+					</ul>
+				</div>
+				<% } %>
+				
+				<form class="form-inline form-entrar" action="/login" method="post">
 					<div class="form-group">				
-						<input type="text" name="usuario" id="usuario" placeholder="Usuário" class="form-control" autocomplete="off" />
-						<input type="password" name="senha" id="senha" placeholder="Senha" class="form-control" />
-						<button type="button" class="btn btn-success">Entrar</button>
+						<input type="text" name="user" id="user" placeholder="User" class="form-control" autocomplete="off" />
+						<input type="password" name="password" id="password" placeholder="Password" class="form-control" />
+						<button type="submit" class="btn btn-success">Log In</button>
 						<button type="button" class="btn btn-info">Cadastro</button>
 					</div>
 				</form>
