@@ -30,29 +30,29 @@
 	    	
 			<div class="row">
 	    		<div class="col-sm-3 casa">
-					<img src="images/house_martell.jpg" />
+					<img src="images/house_<%=gameData.house%>.jpg" />
 				</div>
 
 	    		<div class="col-sm-9">
 					<div class="row barra-superior">
 						<div class="col-sm-2"> 
 							<img src="images/skills/fear.jpg" title="Fear" alt="Fear" />
-							<span>754</span>
+							<span><%=gameData.attributes.fear%></span>
 						</div>
 						
 						<div class="col-sm-2"> 
 							<img src="images/skills/wisdom.jpg" title="Wisdom" alt="Wisdom"/>
-							<span>754</span>
+							<span><%=gameData.attributes.wisdom%></span>
 						</div>
 						
 						<div class="col-sm-2"> 
 							<img src="images/skills/commerce.jpg" title="Commerce" alt="Commerce"/>
-							<span>754</span>
+							<span><%=gameData.attributes.commerce%></span>
 						</div>
 						
 						<div class="col-sm-2"> 
 							<img src="images/skills/magic.jpg" title="Magic" alt="Magic"/>
-							<span>754</span>
+							<span><%=gameData.attributes.magic%></span>
 						</div>
 					</div>
 				</div>
@@ -61,7 +61,7 @@
 			<div class="row">
 				<div class="col-sm-3"></div>
 				<div class="col-sm-9">
-					<div class="actions"></div>					
+					<div class="actions" id="actions">Great Master of this Reign, what are your actions today?</div>
 				</div>
 			</div>
 			
@@ -72,18 +72,20 @@
 			
 				<div class="row">
 					<div class="col-sm-1">
-						<img src="images/others/subjects.jpg" title="Subjects" alt="Subjects"/>
+						<img src="images/others/subjects.jpg" title="Subjects" alt="Subjects" id="btn_subjects"/>
+						<span>Subjects:<br><%=gameData.attributes.subjects%></span>
 					</div>
 					
 					<div class="col-sm-1">
-						<img src="images/others/scroll.jpg" title="Scroll" alt="Scroll"/>
+						<img src="images/others/scroll.jpg" title="Scrolls" alt="Scrolls" id="btn_scrolls"/>
+						<span>Scrolls:<br><%=gameData.attributes.scrolls%></span>
 					</div>
 					
 					<div class="col-sm-8"></div>
 					
 					<div class="col-sm-2">
-						<img src="images/others/coin.jpg" title="Coin" alt="Coin"/>
-						<span>25</span>
+						<img src="images/others/coin.jpg" title="Money" alt="Money"/>
+						<span><%=gameData.attributes.money%></span>
 					</div>
 					
 				</div>
@@ -93,7 +95,27 @@
 			$(document).ready(function() {
 				$('#btn_exit').on('click', function() {
 					window.location.href = '/logout';
-				})
+				});
+
+				$('#btn_subjects').on('click', function() {
+					$.ajax({
+						url: '/subjects',
+						method: 'get',
+						success: function(htmlData) {
+							$("#actions").html(htmlData);
+						}
+					});
+				});
+
+				$('#btn_scrolls').on('click', function() {
+					$.ajax({
+						url: '/scrolls',
+						method: 'get',
+						success: function(htmlData) {
+							$("#actions").html(htmlData);
+						}
+					});
+				});
 			});
 		</script>
 	</body>

@@ -21,8 +21,10 @@ module.exports.register_save = function (application, req, res) {
     //console.log(connection);
 
     var UsersDAO = new application.app.models.UsersDAO(connection);
+    var GameDAO = new application.app.models.GameDAO(connection);
 
     UsersDAO.insertUser(formData);
+    GameDAO.generateAttributes(formData.user);
 
     res.send('next steps...');
 };

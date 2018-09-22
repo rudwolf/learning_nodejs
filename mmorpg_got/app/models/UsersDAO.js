@@ -20,7 +20,6 @@ UsersDAO.prototype.login = function (user, req, res) {
                     req.session.user = result[0].user;
                     req.session.house = result[0].house;
                 }
-
                 if(req.session.authorized) {
                     res.redirect('game');
                 } else {
