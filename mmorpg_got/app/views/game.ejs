@@ -27,6 +27,20 @@
 		</nav>
 
 	    <div class="container">
+
+			<% if(gameData.msg == 'CE') { %>
+				<div class="alert alert-danger" id="msg">
+					<strong>Invalid Command! Please select an action and the amount!</strong>
+				</div>
+			<% } %>
+
+			<% if(gameData.msg == 'CX') { %>
+				<div class="alert alert-success" id="msg">
+					<strong>Your wish is my command Master! Order accepted and sent to our troops!</strong>
+				</div>
+			<% } %>
+
+			</div>
 	    	
 			<div class="row">
 	    		<div class="col-sm-3 casa">
@@ -98,6 +112,7 @@
 				});
 
 				$('#btn_subjects').on('click', function() {
+					$('#msg').hide();
 					$.ajax({
 						url: '/subjects',
 						method: 'get',
@@ -108,6 +123,7 @@
 				});
 
 				$('#btn_scrolls').on('click', function() {
+					$('#msg').hide();
 					$.ajax({
 						url: '/scrolls',
 						method: 'get',
