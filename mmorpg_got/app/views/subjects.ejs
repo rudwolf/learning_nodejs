@@ -1,24 +1,24 @@
 <div id="aldecoes">					
 	<h3>Subjects</h3>
 	
-	<form class="form-cadastro">
+	<form class="form-cadastro" action="/new_subject_order" method="post">
 
 		<div class="row">
 			<div class="col-xs-5">
 				<div class="form-group">
-					<select class="form-control">
+					<select class="form-control" name="action">
 						<option value="">-- Choose an action</option>
 						<option value="1">Collect Resources (2G &amp; 1H)</option>
-						<option value="1">Hang subject (3G &amp; 2H)</option>
-						<option value="1">Teach History (1G &amp; 5H)</option>
-						<option value="1">Teach Magic (1G &amp; 5H)</option>
-					</select>										
+						<option value="2">Hang subject (3G &amp; 2H)</option>
+						<option value="3">Teach History (1G &amp; 5H)</option>
+						<option value="4">Teach Magic (1G &amp; 5H)</option>
+					</select>
 				</div>
 			</div>
 			
 			<div class="col-xs-3">
 				<div class="form-group">
-					<input type="number" class="form-control" id="amount" placeholder="Amount (How many?)">									
+					<input type="number" class="form-control" id="amount" name="amount" placeholder="Amount (How many?)">						
 				</div>
 			</div>
 			

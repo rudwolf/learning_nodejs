@@ -26,3 +26,19 @@ module.exports.game_ajax_subjects = function (application, req, res) {
 module.exports.game_ajax_scrolls = function (application, req, res) {
     res.render("scrolls", {});
 };
+
+module.exports.game_new_subject_order = function (application, req, res) {
+    var formData = req.body;
+
+    req.assert('action', 'Action cannot be empty!').notEmpty();
+    req.assert('amount', 'Amount cannot be empty').notEmpty();
+
+    var errors = req.validationErrors();
+    if (errors) {
+        // res.render('register', { validation: errors, formData: formData });
+        res.redirect('game');
+        return;
+    }
+
+    res.send('all ok!');
+};
