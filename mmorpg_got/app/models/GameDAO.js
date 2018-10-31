@@ -1,3 +1,5 @@
+var ObjectID = require('mongodb').ObjectId;
+
 function GameDAO(connection) {
     this._connection = connection();
 }
@@ -9,6 +11,7 @@ GameDAO.prototype.generateAttributes = function(user) {
                 user: user,
                 money: 15,
                 subjects: 10,
+                scrolls: 0,
                 fear: Math.floor(Math.random() * 1000),
                 wisdom: Math.floor(Math.random() * 1000),
                 commerce: Math.floor(Math.random() * 1000),
@@ -17,7 +20,7 @@ GameDAO.prototype.generateAttributes = function(user) {
             mongoclient.close();
         });        
     });
-}
+};
 
 GameDAO.prototype.startGame = function (req, res, msg) {
     this._connection.open(function (err, mongoclient) {
@@ -33,48 +36,93 @@ GameDAO.prototype.startGame = function (req, res, msg) {
                     gameData.attributes = result[0];
                 }
                 res.render('game', { gameData: gameData });
-                console.log(gameData);
+                console.log(req.session.user);
                 mongoclient.close();
             });
         });
     });    
-}
+};
 
 GameDAO.prototype.subjectAction = function (formData) {
-    console.log(formData);
+
     this._connection.open(function (err, mongoclient) {
         mongoclient.collection("action", function (err, collection) {
             var date = new Date();
 
             var timeToComplete = null;
 
-            switch (formData.action) {
-                case 1: timeToComplete = 1 * 60 * 60000;
-                case 2: timeToComplete = 2 * 60 * 60000;
-                case 3: timeToComplete = 3 * 60 * 60000;
-                case 5: timeToComplete = 5 * 60 * 60000;
+            switch (parseInt(formData.action)) {
+                case 1: timeToComplete = 1 * 60 * 60000; break;
+                case 2: timeToComplete = 2 * 60 * 60000; break;
+                case 3: timeToComplete = 3 * 60 * 60000; break;
+                case 5: timeToComplete = 5 * 60 * 60000; break;
             }
 
             formData.action_finishes_in = date.getTime() + timeToComplete;
 
             collection.insert(formData);
         });
-    });
-}
 
-GameDAO.prototype.getActions = function(user) {
+        mongoclient.collection("game", function (err, collection) {
+
+            var coins = null;
+            var amount = formData.amount;
+
+            switch (parseInt(formData.action)) {
+                case 1: coins = -2 * amount; break;
+                case 2: coins = -3 * amount; break;
+                case 3: coins = -1 * amount; break;
+                case 5: coins = -1 * amount; break;
+            }
+
+            collection.update(
+                { user: formData.user},
+                { $inc: {money: coins}}
+            );
+
+            mongoclient.close();
+        });
+    });
+};
+
+GameDAO.prototype.getActions = function(user, res) {
     this._connection.open(function (err, mongoclient) {
         mongoclient.collection("action", function (err, collection) {
+
+            var date = new Date();
+            var current_moment = date.getTime();
+
             collection.find({
                 user: user,
+                action_finishes_in: {$gt:current_moment}
             }).toArray(function (err, result) {
-                console.log(result);
+                
+                res.render("scrolls", {actions: result});
+
                 mongoclient.close();
             });
         });
+
     });
-}
+};
+
+GameDAO.prototype.revokeAction = function (_id, res) {
+
+    this._connection.open(function (err, mongoclient) {
+        mongoclient.collection("action", function (err, collection) {
+
+            collection.remove(
+                { _id: ObjectID(_id)},
+                function(err, result) {
+                    res.redirect('game?msg=RV');
+                }
+            );
+
+            mongoclient.close();
+        });
+    });
+};
 
 module.exports = function () {
     return GameDAO;
-}
+};

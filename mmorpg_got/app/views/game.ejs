@@ -40,6 +40,18 @@
 				</div>
 			<% } %>
 
+			<% if(gameData.msg == 'CD') { %>
+				<div class="alert alert-success" id="msg">
+					<strong>Dear master, one of your actions has finished! Enjoy!</strong>
+				</div>
+			<% } %>
+
+			<% if(gameData.msg == 'RV') { %>
+				<div class="alert alert-success" id="msg">
+					<strong>My Master, this action has been cancelled by your order!</strong>
+				</div>
+			<% } %>
+
 			</div>
 	    	
 			<div class="row">
@@ -85,21 +97,21 @@
 			<div class="container">
 			
 				<div class="row">
-					<div class="col-sm-1">
+					<div class="col-sm-2 text-center">
 						<img src="images/others/subjects.jpg" title="Subjects" alt="Subjects" id="btn_subjects"/>
-						<span>Subjects:<br><%=gameData.attributes.subjects%></span>
+						<span>Subjects<br><%=gameData.attributes.subjects%></span>
 					</div>
 					
-					<div class="col-sm-1">
+					<div class="col-sm-2 text-center">
 						<img src="images/others/scroll.jpg" title="Scrolls" alt="Scrolls" id="btn_scrolls"/>
-						<span>Scrolls:<br><%=gameData.attributes.scrolls%></span>
+						<span>Scrolls<br><%=gameData.attributes.scrolls%></span>
 					</div>
 					
-					<div class="col-sm-8"></div>
+					<div class="col-sm-6"></div>
 					
-					<div class="col-sm-2">
+					<div class="col-sm-2 text-center">
 						<img src="images/others/coin.jpg" title="Money" alt="Money"/>
-						<span><%=gameData.attributes.money%></span>
+						<span><%=gameData.attributes.money%> G</span>
 					</div>
 					
 				</div>
@@ -129,9 +141,30 @@
 						method: 'get',
 						success: function(htmlData) {
 							$("#actions").html(htmlData);
+
+							clearTimeout(timeId);
+							subjects_update_timer();
 						}
 					});
 				});
+
+				timeId = null;
+
+				subjects_update_timer = function (){
+					$('.remaining').each(function() {
+						var seconds = $(this).html();
+						var current_seconds = parseInt(seconds) - 1;
+
+						if (current_seconds < 0){
+							window.location.href = '/game?msg=CD'
+						} else {
+							$(this).html(current_seconds);
+						}
+
+					});
+
+					timeId = setTimeout('subjects_update_timer()', 1000);
+				};				
 			});
 		</script>
 	</body>

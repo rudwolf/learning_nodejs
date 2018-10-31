@@ -15,6 +15,10 @@ module.exports = function(application){
 		application.app.controllers.game.game_new_subject_order(application, req, res);
 	});
 
+	application.get('/revoke_order', function (req, res) {
+		application.app.controllers.game.game_revoke_order(application, req, res);
+	});
+
 	application.get('/logout', function (req, res) {
 		application.app.controllers.game.game_logout(application, req, res);
 	});

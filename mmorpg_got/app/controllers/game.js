@@ -49,9 +49,8 @@ module.exports.game_ajax_scrolls = function (application, req, res) {
     var GameDAO = new application.app.models.GameDAO(connection);
 
     var user = req.session.user;
-    GameDAO.getActions(user);
+    GameDAO.getActions(user, res);
 
-    res.render("scrolls", {});
 };
 
 module.exports.game_new_subject_order = function (application, req, res) {
@@ -77,5 +76,18 @@ module.exports.game_new_subject_order = function (application, req, res) {
     formData.user = req.session.user;
     GameDAO.subjectAction(formData);
     res.redirect('game?msg=CX');
+    return;
+};
+
+module.exports.game_revoke_order = function (application, req, res) {
+    var url_query = req.query;
+
+    var connection = application.config.dbConnection;
+    var GameDAO = new application.app.models.GameDAO(connection);
+
+    var _id = url_query.action_id;
+
+    GameDAO.revokeAction(_id, res);
+    //res.redirect('game?msg=AR');
     return;
 };

@@ -34,7 +34,8 @@ app.use(expressValidator());
 app.use(expressSession({
 	secret: '54B791118A81F',
 	resave: false,
-	saveUninitialized: false
+	saveUninitialized: false,
+    maxAge: Date.now() + (30 * 86400 * 1000)
 }));
 
 /* efetua o autoload das rotas, dos models e dos controllers para o objeto app */

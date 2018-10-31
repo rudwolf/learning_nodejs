@@ -2,9 +2,32 @@
 	<h3>Scrolls</h3>
 	
 	<ul>
-		<li>1 ganging(s) programmed - <small> 00000 seconds remaining - <a href="#">revoke order</a></small></li>
-		<li>2 subject(s) training magic - <small>00000 seconds remaining - <a href="#">revoke order</a></small></li>
-		<li>1 subject(s) training history - <small>00000 seconds left - <a href="#">revoke order</a></small></li>
-		<li>5 subject(s) collecting resources - <small>00000 seconds remaining - <a href="#">revoke order</a></small></li>
+        <%
+        if (actions.length < 1) { %>
+            <li> There is no current actions for your subjects, give them an order and it will appear here! </li>
+        <%
+        } %>
+        <%
+        for(var i = 0; i < actions.length; i++) {
+            var action_text = '';
+
+            switch(parseInt(actions[i].action)) {
+                case 1: action_text = 'subject(s) gibbeting villagers'; break;
+                case 2: action_text = 'subject(s) collecting resources'; break;
+                case 3: action_text = 'subject(s) training history'; break;
+                case 4: action_text = 'subject(s) training magic'; break;
+            }
+
+            var date = new Date();
+            var current_timestamp = date.getTime();
+            var remaining_seconds = Math.round((actions[i].action_finishes_in - current_timestamp) / 1000);
+
+            %>
+    		<li><%=actions[i].amount%> <%=action_text%>
+                - <small><span class="remaining"><%=remaining_seconds%></span> seconds remaining 
+                - <a href="/revoke_order?action_id=<%=actions[i]._id%>">revoke order</a></small>
+            </li>
+            <%
+        } %>
 	</ul>
 </div>
