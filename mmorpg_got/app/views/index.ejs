@@ -20,20 +20,31 @@
 
 		<nav class="navbar navbar-default navbar-static-top">
 			<div class="container">
-				<% if(validation.length) { %>
-				<div class="alert alert-danger">
-					<strong>Please fix the errors below</strong>
-					<ul>
-						<% for(var i = 0;i < validation.length; i++) { %>
-						<li><%=validation[i].msg%></li>
-						<% } %>
-					</ul>
-				</div>
-				<% } %>
+				<%
+				if(validation.length) {
+					if ('undefined' == typeof previousUserName) var previousUserName = ''; %>
+					<div class="alert alert-danger">
+						<strong>Please fix the errors below</strong>
+						<ul>
+							<% for(var i = 0;i < validation.length; i++) { %>
+							<li><%=validation[i].msg%></li>
+							<% } %>
+						</ul>
+					</div>
+				<%
+				} %>
+
+				<%
+				if ('undefined' !== typeof registrationSuccess) { %>
+					<div class="alert alert-success">
+						<strong>You are now registered! Please log in below with your user and password</strong>
+					</div>
+				<%
+				} %>
 				
-				<form class="form-inline form-entrar" action="/login" method="post">
-					<div class="form-group">				
-						<input type="text" name="user" id="user" placeholder="User" class="form-control" autocomplete="off" />
+				<form class="form-inline form-login" action="/login" method="post">
+					<div class="form-group">
+						<input type="text" name="user" id="user" value="<%=previousUserName%>" placeholder="User" class="form-control" autocomplete="off" />
 						<input type="password" name="password" id="password" placeholder="Password" class="form-control" />
 						<button type="submit" class="btn btn-success">Log In</button>
 						<button type="button" class="btn btn-info" id="btn_register">Register</button>
@@ -48,7 +59,7 @@
 	    		<div class="col-md-2"></div>
 
 	    		<div class="col-md-8">
-					<img src="images/game_of_thrones_logo.jpg" />
+					<img src="/images/game_of_thrones_logo.jpg" />
 				</div>
 
 	    		<div class="col-md-2"></div>

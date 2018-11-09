@@ -1,0 +1,26 @@
+<div id="completed_actions" class="main_content_box">
+	<h3>Recently Completed Actions and Results</h3>
+	
+	<ul>
+        <%
+        if (completed.length < 1) { %>
+            <li> There is no recent previous actions to show here, give orders to your subjects by clicking on the Subject icon!</li>
+        <%
+        } %>
+        <%
+        for(var i = 0; i < completed.length; i++) {
+            var completed_text = '';
+
+            switch(parseInt(completed[i].action)) {
+                case 1: completed_text = 'subject(s) villagers gibbeted, giving you more <strong>Fear Points (+20)</strong>';break;
+                case 2: completed_text = 'subject(s) collected resources, giving you <b>Money and Commerce Points (+30)</b>';break;
+                case 3: completed_text = 'subject(s) trained history, giving you more <b>Wisdom Points (+50)</b>'; break;
+                case 4: completed_text = 'subject(s) trained magic, giving you more <b>Magic Points (+50)</b>'; break;
+            }
+
+            %>
+    		<li><%=completed[i].amount%> <%-completed_text%></small></li>
+            <%
+        } %>
+	</ul>
+</div>

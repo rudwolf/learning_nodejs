@@ -9,7 +9,7 @@ UsersDAO.prototype.insertUser = function(user) {
             mongoclient.close();
         });        
     });
-}
+};
 
 UsersDAO.prototype.login = function (user, req, res) {
     this._connection.open(function (err, mongoclient) {
@@ -23,7 +23,12 @@ UsersDAO.prototype.login = function (user, req, res) {
                 if(req.session.authorized) {
                     res.redirect('game');
                 } else {
-                    res.render('index', {validation: [{msg: 'User or passowrd do not match'}]});
+                    res.render('index', {
+                        validation: [
+                            {msg: 'User or passowrd do not match'}
+                        ],
+                        previousUserName: user.user
+                    });
                 }
             });
             mongoclient.close();
@@ -33,4 +38,4 @@ UsersDAO.prototype.login = function (user, req, res) {
 
 module.exports = function () {
     return UsersDAO;
-}
+};

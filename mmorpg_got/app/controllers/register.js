@@ -26,5 +26,7 @@ module.exports.register_save = function (application, req, res) {
     UsersDAO.insertUser(formData);
     GameDAO.generateAttributes(formData.user);
 
-    res.send('next steps...');
+    //Redirect to login with success message
+    res.render('index', {validation: [], registrationSuccess: true});
+    return;
 };

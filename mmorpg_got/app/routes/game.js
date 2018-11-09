@@ -11,6 +11,10 @@ module.exports = function(application){
 		application.app.controllers.game.game_ajax_scrolls(application, req, res);
 	});
 
+	application.get('/completed', function (req, res) {
+		application.app.controllers.game.game_ajax_completed(application, req, res);
+	});
+
 	application.post('/new_subject_order', function (req, res) {
 		application.app.controllers.game.game_new_subject_order(application, req, res);
 	});
@@ -23,5 +27,4 @@ module.exports = function(application){
 		application.app.controllers.game.game_logout(application, req, res);
 	});
 
-
-}
+};

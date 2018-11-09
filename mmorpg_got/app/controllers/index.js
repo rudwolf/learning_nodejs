@@ -1,5 +1,11 @@
 module.exports.home = function(application, req, res){
-    res.render('index', { validation: {}, formData: {}});
+    var hasLogout = false;
+    if (req.session.hasLogout == true) {
+        req.session.destroy( function(err){
+            hasLogout = true;
+        });
+    }
+    res.render('index', { validation: {}, formData: {}, hasLogout: hasLogout});
 };
 
 module.exports.login = function (application, req, res) {

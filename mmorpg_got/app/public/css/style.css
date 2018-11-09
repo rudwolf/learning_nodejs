@@ -3,11 +3,11 @@
 }
 
 .body-game{
-	background: url('../images/map.gif') no-repeat center;
+	background: url('../images/map.gif') no-repeat center top;
 	background-size: cover;
 }
 
-.form-entrar {
+.form-login, .form-register-back {
 	padding-top: 10px;
 }
 
@@ -58,6 +58,7 @@
 	font-weight: bold;
 }
 
+.completed,
 .actions{
 	background-color: #fff;
 	opacity: 0.9;
@@ -65,13 +66,21 @@
 	padding:15px;
 }
 
+.completed {
+	margin-bottom: 10px;
+}
+
 .actions span{
 	color: #333333;
 }
 
-#pergaminhos{
+.main_content_box{
 	max-height: 180px;
 	overflow: auto;
+}
+
+.house-img {
+	text-align: center;
 }
 
 .casa span{

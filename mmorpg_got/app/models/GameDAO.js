@@ -1,5 +1,32 @@
 var ObjectID = require('mongodb').ObjectId;
 
+var ActionList = {
+    1: {
+        'name': 'Collect Resources',
+        'label': 'Collect Resources (2G &amp; 1H)',
+        'cost': 2,
+        'time': 1
+    },
+    2: {
+        'name': 'Hang subject',
+        'label': 'Hang subject (3G &amp; 2H)',
+        'cost': 3,
+        'time': 2
+    },
+    3: {
+        'name': 'Teach History',
+        'label': 'Teach History (1G &amp; 5H)',
+        'cost': 1,
+        'time': 5
+    },
+    4: {
+        'name': 'Teach Magic',
+        'label': 'Teach Magic (1G &amp; 5H)',
+        'cost': 1,
+        'time': 5
+    }
+};
+
 function GameDAO(connection) {
     this._connection = connection();
 }
@@ -11,7 +38,9 @@ GameDAO.prototype.generateAttributes = function(user) {
                 user: user,
                 money: 15,
                 subjects: 10,
+                working_subjects: 0,
                 scrolls: 0,
+                reputation: 0,
                 fear: Math.floor(Math.random() * 1000),
                 wisdom: Math.floor(Math.random() * 1000),
                 commerce: Math.floor(Math.random() * 1000),
@@ -104,6 +133,52 @@ GameDAO.prototype.getActions = function(user, res) {
         });
 
     });
+};
+
+GameDAO.prototype.getCompleted = function(user, res) {
+    this._connection.open(function (err, mongoclient) {
+        var gameData = {};
+
+        mongoclient.collection("game", function (err, collection) {
+            collection.find({
+                user: req.session.user,
+            }).toArray(function (err, result) {
+                    gameData.attributes = {};
+                if (undefined != result[0]) {
+                    gameData.attributes = result[0];
+                }
+                mongoclient.close();
+            });
+        });
+
+        mongoclient.collection("action", function (err, collection) {
+            var date = new Date();
+            var current_moment = date.getTime();
+
+            collection.find({
+                user: user,
+                action_finishes_in: {$lte:current_moment}
+            }).toArray(function (err, result) {
+                var completed = [];
+                for (var i = 0; i < result.length; i++) {
+                    current_action = result[i].action;
+                    current_action_data = ActionList[current_action];
+                    Object.assign(current_action_data, result[i]);
+                    completed.push(current_action_data);
+                }
+
+                console.log(completed);
+                
+                //res.render("scrolls", {actions: result});
+                //
+                res.render("completed", {completed: completed});
+
+                mongoclient.close();
+            });
+        });
+
+    });
+    
 };
 
 GameDAO.prototype.revokeAction = function (_id, res) {
