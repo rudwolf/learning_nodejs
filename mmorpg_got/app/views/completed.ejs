@@ -19,7 +19,7 @@
             }
 
             %>
-    		<li><%=completed[i].amount%> <%-completed_text%></small></li>
+    		<li><%=completed[i].amount%> <%-completed_text%><small> - <a href="/claim_order?action_id=<%=completed[i]._id%>">claim rewards</a></small></li>
             <%
         } %>
 	</ul>

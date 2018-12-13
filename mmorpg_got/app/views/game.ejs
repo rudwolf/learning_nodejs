@@ -52,7 +52,11 @@
 				</div>
 			<% } %>
 
-			</div>
+			<% if(gameData.msg == 'CL') { %>
+				<div class="alert alert-success" id="msg">
+					<strong>Your effort, your prize Master! Reward claimed, check your stats!</strong>
+				</div>
+			<% } %>
 	    	
 			<div class="row">
 	    		<div class="col-sm-3 house-img">
@@ -60,7 +64,7 @@
 				</div>
 
 	    		<div class="col-sm-9">
-					<div class="row barra-superior">
+					<div class="row upper-bar">
 						<div class="col-sm-2"> 
 							<img src="images/skills/fear.jpg" title="Fear" alt="Fear" />
 							<span>Fear<br><%=gameData.attributes.fear%></span>
@@ -166,19 +170,28 @@
 
 				subjects_update_timer = function (){
 					$('.remaining').each(function() {
-						var seconds = $(this).html();
+						var seconds = $(this).data('seconds');
 						var current_seconds = parseInt(seconds) - 1;
 
 						if (current_seconds < 0){
 							window.location.href = '/game?msg=CD'
 						} else {
-							$(this).html(current_seconds);
+							$(this).data('seconds', current_seconds);
+							$(this).html(subjects_human_time(current_seconds));
 						}
 
 					});
 
 					timeId = setTimeout('subjects_update_timer()', 1000);
-				};				
+				};
+
+				subjects_human_time = function(seconds){
+					var numhours = Math.floor(((seconds % 31536000) % 86400) / 3600);
+            		var numminutes = Math.floor((((seconds % 31536000) % 86400) % 3600) / 60);
+            		var numseconds = (((seconds % 31536000) % 86400) % 3600) % 60;
+					var remaining_time = numhours + " hours, " + numminutes + " minutes and " + numseconds + " seconds";
+					return remaining_time;
+				}
 			});
 		</script>
 	</body>

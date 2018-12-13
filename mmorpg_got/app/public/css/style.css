@@ -1,10 +1,20 @@
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+}
+
 .body-index{
 	background: #010101;
 }
 
 .body-game{
-	background: url('../images/map.gif') no-repeat center top;
-	background-size: cover;
+	background: url('../images/map.gif') no-repeat center center fixed;
+	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+  	background-size: cover;	
 }
 
 .form-login, .form-register-back {
@@ -23,18 +33,18 @@
 	padding-top: 10px;
 }
 
-.barra-superior {
+.upper-bar {
 	background-color: #fff;
 	padding: 15px;
 	opacity: 0.9;
     filter: alpha(opacity=90); /* For IE8 and earlier */
 }
 
-.barra-superior {
+.upper-bar {
 	text-align:center;
 }
 
-.barra-superior span{
+.upper-bar span{
 	display: block;
 	width: 100%;
 	font-weight: bold;

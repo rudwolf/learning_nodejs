@@ -106,7 +106,7 @@ GameDAO.prototype.subjectAction = function (formData) {
 
             collection.update(
                 { user: formData.user},
-                { $inc: {money: coins}}
+                { $inc: { money: coins, scrolls: 1}}
             );
 
             mongoclient.close();
@@ -135,13 +135,13 @@ GameDAO.prototype.getActions = function(user, res) {
     });
 };
 
-GameDAO.prototype.getCompleted = function(user, res) {
+GameDAO.prototype.getCompleted = function (userData, res) {
     this._connection.open(function (err, mongoclient) {
         var gameData = {};
 
         mongoclient.collection("game", function (err, collection) {
             collection.find({
-                user: req.session.user,
+                user: userData,
             }).toArray(function (err, result) {
                     gameData.attributes = {};
                 if (undefined != result[0]) {
@@ -156,7 +156,7 @@ GameDAO.prototype.getCompleted = function(user, res) {
             var current_moment = date.getTime();
 
             collection.find({
-                user: user,
+                user: userData,
                 action_finishes_in: {$lte:current_moment}
             }).toArray(function (err, result) {
                 var completed = [];
@@ -167,7 +167,7 @@ GameDAO.prototype.getCompleted = function(user, res) {
                     completed.push(current_action_data);
                 }
 
-                console.log(completed);
+                //console.log(completed);
                 
                 //res.render("scrolls", {actions: result});
                 //
@@ -192,6 +192,23 @@ GameDAO.prototype.revokeAction = function (_id, res) {
                     res.redirect('game?msg=RV');
                 }
             );
+
+            mongoclient.close();
+        });
+    });
+};
+
+GameDAO.prototype.claimAction = function (_id, res) {
+
+    this._connection.open(function (err, mongoclient) {
+        mongoclient.collection("action", function (err, collection) {
+
+            /* collection.remove(
+                { _id: ObjectID(_id) },
+                function (err, result) {
+                    res.redirect('game?msg=CL');
+                }
+            ); */
 
             mongoclient.close();
         });

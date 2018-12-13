@@ -47,8 +47,8 @@ module.exports.game_ajax_completed = function (application, req, res) {
     var connection = application.config.dbConnection;
     var GameDAO = new application.app.models.GameDAO(connection);
 
-    var user = req.session.user;
-    GameDAO.getCompleted(user, res);
+    var userData = req.session.user;
+    GameDAO.getCompleted(userData, res);
 };
 
 module.exports.game_ajax_scrolls = function (application, req, res) {
