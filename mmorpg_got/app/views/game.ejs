@@ -28,33 +28,9 @@
 
 	    <div class="container">
 
-			<% if(gameData.msg == 'CE') { %>
-				<div class="alert alert-danger" id="msg">
-					<strong>Invalid Command! Please select an action and the amount!</strong>
-				</div>
-			<% } %>
-
-			<% if(gameData.msg == 'CX') { %>
-				<div class="alert alert-success" id="msg">
-					<strong>Your wish is my command Master! Order accepted and sent to our troops!</strong>
-				</div>
-			<% } %>
-
-			<% if(gameData.msg == 'CD') { %>
-				<div class="alert alert-success" id="msg">
-					<strong>Dear master, one of your actions has finished! Enjoy!</strong>
-				</div>
-			<% } %>
-
-			<% if(gameData.msg == 'RV') { %>
-				<div class="alert alert-success" id="msg">
-					<strong>My Master, this action has been cancelled by your order!</strong>
-				</div>
-			<% } %>
-
-			<% if(gameData.msg == 'CL') { %>
-				<div class="alert alert-success" id="msg">
-					<strong>Your effort, your prize Master! Reward claimed, check your stats!</strong>
+			<% if('undefined' !== typeof gameData.msg) { %>
+				<div class="alert alert-<%=gameData.msg_list[gameData.msg].type%>" id="msg">
+					<strong><%=gameData.msg_list[gameData.msg].msg%></strong>
 				</div>
 			<% } %>
 	    	

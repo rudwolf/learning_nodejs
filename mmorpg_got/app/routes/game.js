@@ -5,7 +5,7 @@ module.exports = function(application){
 
 	application.get('/subjects', function (req, res) {
 		application.app.controllers.game.game_ajax_subjects(application, req, res);
-	});
+	});	
 
 	application.get('/scrolls', function (req, res) {
 		application.app.controllers.game.game_ajax_scrolls(application, req, res);
@@ -21,6 +21,10 @@ module.exports = function(application){
 
 	application.get('/revoke_order', function (req, res) {
 		application.app.controllers.game.game_revoke_order(application, req, res);
+	});
+
+	application.get('/claim_order', function (req, res) {
+		application.app.controllers.game.game_claim_order(application, req, res);
 	});
 
 	application.get('/logout', function (req, res) {

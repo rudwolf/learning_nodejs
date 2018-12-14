@@ -12,10 +12,10 @@
             var completed_text = '';
 
             switch(parseInt(completed[i].action)) {
-                case 1: completed_text = 'subject(s) villagers gibbeted, giving you more <strong>Fear Points (+20)</strong>';break;
-                case 2: completed_text = 'subject(s) collected resources, giving you <b>Money and Commerce Points (+30)</b>';break;
-                case 3: completed_text = 'subject(s) trained history, giving you more <b>Wisdom Points (+50)</b>'; break;
-                case 4: completed_text = 'subject(s) trained magic, giving you more <b>Magic Points (+50)</b>'; break;
+                case 1: completed_text = 'subject(s) villagers gibbeted, giving you <strong>Fear Points ('+(20*completed[i].amount)+')</strong> and you were <strong>penalized by -'+(5*completed[i].amount)+' Reputation Points</strong>'; break;
+                case 2: completed_text = 'subject(s) collected resources, giving you <strong>Money ('+5*completed[i].amount+'G)</strong> and <strong>Commerce Points (+'+(30*completed[i].amount)+')</strong>'; break;
+                case 3: completed_text = 'subject(s) trained history, giving you <strong>Wisdom Points (+'+(50*completed[i].amount)+')</strong> and <strong>Reputation Points (+'+(5*completed[i].amount)+')</strong>'; break;
+                case 4: completed_text = 'subject(s) trained magic, giving you <strong>Magic Points (+'+(50*completed[i].amount)+')</strong> and <strong>Reputation Points (+'+(5*completed[i].amount)+')</strong>'; break;
             }
 
             %>

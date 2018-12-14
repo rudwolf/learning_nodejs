@@ -86,8 +86,7 @@ module.exports.game_new_subject_order = function (application, req, res) {
     var connection = application.config.dbConnection;
     var GameDAO = new application.app.models.GameDAO(connection);
     formData.user = req.session.user;
-    GameDAO.subjectAction(formData);
-    res.redirect('game?msg=CX');
+    GameDAO.subjectAction(formData, req, res);
     return;
 };
 
@@ -97,9 +96,23 @@ module.exports.game_revoke_order = function (application, req, res) {
     var connection = application.config.dbConnection;
     var GameDAO = new application.app.models.GameDAO(connection);
 
+    var currentUser = req.session.user;
     var _id = url_query.action_id;
 
-    GameDAO.revokeAction(_id, res);
+    GameDAO.revokeAction(_id, currentUser, res);
+    
+    return;
+};
+
+module.exports.game_claim_order = function (application, req, res) {
+    var url_query = req.query;
+
+    var connection = application.config.dbConnection;
+    var GameDAO = new application.app.models.GameDAO(connection);
+
+    var _id = url_query.action_id;
+
+    GameDAO.claimAction(_id, res);
     //res.redirect('game?msg=AR');
     return;
 };
