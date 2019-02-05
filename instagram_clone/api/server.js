@@ -46,7 +46,28 @@ app.get('/api/:id', function (req, res) {
                 if (err) {
                     res.json(err);
                 } else {
-                    res.json(results);
+                    if (results.length > 0)
+                        res.json(results);
+                    else {
+                        res.status(404).json({'error':'post not found'});
+                    }
+                }
+                mongoclient.close();
+            });
+        });
+    });
+});
+
+// POST(create)
+app.post('/api', function (req, res) {
+    var postData = req.body;
+    db.open(function (err, mongoclient) {
+        mongoclient.collection('posts', function (err, collection) {
+            collection.insert(postData, function (err, records) {
+                if (err) {
+                    res.json({ 'status': 'error' });
+                } else {
+                    res.json({ 'status': 'post inserted' });
                 }
                 mongoclient.close();
             });
