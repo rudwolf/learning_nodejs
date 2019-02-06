@@ -60,8 +60,12 @@ app.get('/api/:id', function (req, res) {
 
 // POST(create)
 app.post('/api', function (req, res) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
     var postData = req.body;
-    db.open(function (err, mongoclient) {
+
+    res.send(postData);
+    /*db.open(function (err, mongoclient) {
         mongoclient.collection('posts', function (err, collection) {
             collection.insert(postData, function (err, records) {
                 if (err) {
@@ -72,7 +76,7 @@ app.post('/api', function (req, res) {
                 mongoclient.close();
             });
         });
-    });
+    });*/
 });
 
 app.put('/api/:id', function (req, res) {

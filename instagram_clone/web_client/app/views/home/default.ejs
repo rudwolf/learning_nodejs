@@ -28,6 +28,27 @@
 					return false;
 				});
 
+				$('#btn-publish').click(function(){
+					var formData = new FormData();
+					var image_file = document.getElementById("image_file").files[0];
+					var title = document.getElementById("title").value;
+
+					formData.append("image_file", image_file);
+					formData.append("title", title);
+
+					var xhr = new XMLHttpRequest();
+
+					xhr.onreadystatechange = function() {
+						if(xhr.readyState == 4){
+							var response = xhr.responseText;
+							document.getElementById('message').innerHTML = response;
+						}
+					};
+
+					xhr.open("POST", "http://localhost:8080/api");
+					xhr.send(formData);
+				});
+
 			});
 		</script>
 
