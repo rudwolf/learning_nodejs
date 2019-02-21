@@ -48,13 +48,13 @@ body{
 	background: #FAFAFA;
 }
 
-.publicacao{
+.img-post{
 	border:solid 1px #EFEFEF;
 	margin-bottom:50px;
 	text-align: center;
 }
 
-.publicacao .titulo{
+.img-post .title{
 	background-color: #FFF;
 	padding-left:30px;
 	padding-top:15px;
@@ -64,19 +64,19 @@ body{
 	text-align: left;
 }
 
-.publicacao img{
+.img-post img{
+	max-width: 100%;
 	border-top:solid 1px #EFEFEF;
 	border-bottom:solid 1px #EFEFEF;
 }
 
-.comentar{
+.comment{
 	text-align: left;
 	padding:20px;
 	background:#FFF;
 }
 
-.input_comentario{
-	border: none;
+.comment{
 	box-shadow: none;
 	margin-bottom:10px;
 }
