@@ -1,12 +1,15 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
+    multiparty = require('connect-multiparty');
     mongodb = require('mongodb'),
     objectId = require('mongodb').ObjectID;
+    fs = require('fs');
 
 var app = express();
 
 app.use(bodyParser.urlencoded({ extended:true }));
 app.use(bodyParser.json());
+app.use(multiparty());
 
 var port = 8080;
 
@@ -62,21 +65,39 @@ app.get('/api/:id', function (req, res) {
 app.post('/api', function (req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
 
-    var postData = req.body;
+    var date = new Date();
+    var img_timestamp = date.getTime();
+    var imgFilePath = req.files.image_file.path;
 
-    res.send(postData);
-    /*db.open(function (err, mongoclient) {
-        mongoclient.collection('posts', function (err, collection) {
-            collection.insert(postData, function (err, records) {
-                if (err) {
-                    res.json({ 'status': 'error' });
-                } else {
-                    res.json({ 'status': 'post inserted' });
-                }
-                mongoclient.close();
+    var imgFileName = img_timestamp + '_' + req.files.image_file.originalFilename;
+
+    var savePath = "./uploads/" + imgFileName;    
+
+    fs.writeFile(savePath, fs.readFileSync(imgFilePath), function(err){
+        if (err) {
+            res.status(500).json({ error: err });
+            return;
+        }
+
+        var saveData = {
+            image_url: imgFileName,
+            title: req.body.title
+        };
+
+        db.open(function (err, mongoclient) {
+            mongoclient.collection('posts', function (err, collection) {
+                collection.insert(saveData, function (err, records) {
+                    if (err) {
+                        res.json({ 'status': 'error' });
+                    } else {
+                        res.json({ 'status': 'post inserted' });
+                    }
+                    mongoclient.close();
+                });
             });
         });
-    });*/
+    });
+    
 });
 
 app.put('/api/:id', function (req, res) {
@@ -92,7 +113,7 @@ app.put('/api/:id', function (req, res) {
                 {},
                 function (err, records) {
                 if (err) {
-                    res.json(err);
+                    res.status(500).json(err);
                 } else {
                     res.json(records);
                 }

@@ -1,2 +1,4 @@
 api/node_modules/
 web_client/node_modules/
+api/uploads/*
+!api/uploads/.gitkeep
