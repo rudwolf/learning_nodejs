@@ -71,30 +71,30 @@ body{
 }
 
 .comment{
-	text-align: left;
 	padding:20px;
-	background:#FFF;
-}
-
-.comment{
 	box-shadow: none;
 	margin-bottom:10px;
 }
 
-.comentarios{
+.comments{
 	text-align: left;
-	padding:20px;
 	background:#FFF;
 	border-bottom: solid 1px #EFEFEF;
 }
 
-.txt_comentario{
+.txt_comment{
 	display: block;
 	width:100%;
+	padding:20px;
 }
 
-.btn_remover_postagem{
+.txt_comment:nth-child(even) {
+	background-color: #F0F0F0;
+}
+
+.btn_remove_comment{
 	text-decoration: none;
-	color: #c2c2c2;
+	color: #000000;
 	border:none;
+	margin-right: 10px;
 }

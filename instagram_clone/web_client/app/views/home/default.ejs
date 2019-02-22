@@ -30,19 +30,41 @@
 										'<span class="title">' +
 											data[i].title +
 										'</span>' +
-										'<img src="http://localhost:8080/images/'+data[i].image_url+'" />' +
+										'<img src="http://localhost:8080/images/'+data[i].image_url+'" />'+
+										'<div class="comments" id="comment_list_for_' + data[i]._id + '"></div>'+
 										'<div class="comment">'+
 											'<input type="text" id="comment_on_'+data[i]._id+'" class="form-control comment" placeholder="Wrtie your comment">'+
 											'<button class="btn btn-default btn_post_comment" type="button" value="'+data[i]._id+'">Comentar</button>'+
 										'</div>'+
 									'</div>'
 								);
+
+								if(data[i].comments != undefined){
+									var comments = data[i].comments;
+
+									for(j = 0; j < comments.length; j++){
+										$('#comment_list_for_' + data[i]._id).append(
+											'<div class="txt_comment">'+
+												'<button type="button" value="' + comments[j].id_comment + '" class="btn btn-danger btn-sm  btn_remove_comment">X</button>'+
+												comments[j].comment+
+											'</div>'
+										);
+									}
+								}
 							}
+
 							$('.btn_post_comment').click(function() {
 								var id = this.value;
 								var comment = $('#comment_on_'+id).val();
-								console.log(comment);
+								publish_comment(id,comment);
 							});
+
+							$(".btn_remove_comment").click(function(){
+								var id_comment = this.value;
+
+								delete_comment(id_comment);
+							});
+
 						} else {
 							console.log("error");
 						}
@@ -52,6 +74,33 @@
 				}
 
 				load_posts();
+
+				function publish_comment(id, comment){
+					var xhr = new XMLHttpRequest();
+					xhr.open('PUT', 'http://localhost:8080/api/'+id);
+					xhr.setRequestHeader('Content-Type', 'application/json');
+
+					xhr.onload = function() {
+						if (xhr.status === 200) {
+							window.location.href = '/home';
+						}
+						console.log(xhr.responseText);
+					}
+					xhr.send(JSON.stringify({'comment':comment}));
+				}
+
+				function delete_comment(id) {
+					var xhr = new XMLHttpRequest();
+					xhr.open('DELETE', 'http://localhost:8080/api/' + id);
+
+					xhr.onload = function(){
+						if(xhr.status === 200){
+							window.location.href = '/home';
+						}
+					};
+
+					xhr.send();
+				}
 
 				$('#btn_include').click(function(){
 					$('#container_timeline').hide();

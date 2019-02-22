@@ -11,6 +11,14 @@ app.use(bodyParser.urlencoded({ extended:true }));
 app.use(bodyParser.json());
 app.use(multiparty());
 
+app.use(function(req, res, next){
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+});
+
 var port = 8080;
 
 app.listen(port);
@@ -28,8 +36,6 @@ app.get('/', function(req, res){
 });
 
 app.get('/api', function (req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-
     db.open(function (err, mongoclient) {
         mongoclient.collection('posts', function (err, collection) {
             collection.find().toArray(function (err, results) {
@@ -79,8 +85,6 @@ app.get('/images/:imgfile', function (req, res) {
 
 // POST(create)
 app.post('/api', function (req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-
     var date = new Date();
     var img_timestamp = date.getTime();
     var imgFilePath = req.files.image_file.path;
@@ -117,14 +121,16 @@ app.post('/api', function (req, res) {
 });
 
 app.put('/api/:id', function (req, res) {
-    var postData = req.body;
-
     db.open(function (err, mongoclient) {
         mongoclient.collection('posts', function (err, collection) {
             collection.update(
                 { _id: objectId(req.params.id)},
                 {
-                    $set : { title: req.body.title }
+                    $push : { comments: {
+                        id_comment: new objectId(),
+                        comment: req.body.comment
+                        }
+                    }
                 },
                 {},
                 function (err, records) {
@@ -140,15 +146,18 @@ app.put('/api/:id', function (req, res) {
 });
 
 app.delete('/api/:id', function (req, res) {
-    var postData = req.body;
-
     db.open(function (err, mongoclient) {
         mongoclient.collection('posts', function (err, collection) {
-            collection.remove(
-                { _id: objectId(req.params.id) },
+            collection.update(
+                {  },
+                { $pull : {
+                        comments: { id_comment : objectId(req.params.id)}
+                    }
+                },
+                {multi: true},
                 function (err, records) {
                     if (err) {
-                        res.json(err);
+                        res.status(500).json(err);
                     } else {
                         res.json(records);
                     }
